@@ -47,23 +47,48 @@ kubectl create rc -exam --image=nginx --replicas=3 --selector=app=webui
 
 ```yaml
 apiVersion: v1
-kind: RepicationController
+kind: ReplicationController
 metadata:
-	name: rc-nginx
+  name: rc-nginx
 spec:
-	replicas: 3
-	selector:
-		app: webui
-	template:
-		metadata:
-			name: nginx-pod
-			labels:
-				app:webui
-		specL
-			containers:
-			-	name: nginx-container
-				image: nginx:1.14
+  replicas: 3
+  selector:
+    app: web
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:1.14
 ```
 
 위와 같이, selector를 보고 replicas갯수만큼 유지 ( template에 labels에 selector에 해당하는 내용이 없으면 에러 발생)
 
+
+
+```shell
+kubectl get replicationcontrollers
+
+# kubectl get rc
+```
+
+위의 코드로 현재 요구되는 replicas 정보를 확인할 수 있습니다.
+
+
+
+```shell
+kubectl describe rc rc-nginx
+```
+
+조금더 자세히 보고싶으면 위와같은 코드를 이용하면 됩니다.
+
+
+
+```shell
+kubectl scale rc rc-nginx --replicas=2
+```
+
+위의 코드를 통해 replicas를 조정할 수 있습니다.
